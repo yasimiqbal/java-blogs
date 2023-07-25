@@ -1,13 +1,17 @@
 package users.posts.comments.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import users.posts.comments.entity.Address;
 import users.posts.comments.entity.User;
 import users.posts.comments.entity.UserProfile;
 import users.posts.comments.reporsitory.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -15,15 +19,25 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public ResponseEntity<List<User>> getAllUsers() {
+        try {
+            return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+        }
     }
 
 
-    public String saveUser(User request) {
-        User user = userRequestArray(request);
-        userRepository.save(user);
-        return "success";
+    public ResponseEntity<String> saveUser(User request) {
+        try {
+            User user = userRequestArray(request);
+            userRepository.save(user);
+            return new ResponseEntity<>("success", HttpStatus.CREATED);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("no record inserted", HttpStatus.BAD_REQUEST);
+        }
     }
 
     private User userRequestArray(User request) {
@@ -50,5 +64,15 @@ public class UserService {
         address.setUser(user);
 
         return user;
+    }
+
+
+    public ResponseEntity<Optional<User>> getUserById(Long id) {
+        try {
+            return new ResponseEntity<>(Optional.of(userRepository.findById(id).get()), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(Optional.empty(), HttpStatus.BAD_REQUEST);
+        }
     }
 }
