@@ -45,6 +45,8 @@ public class UserService {
 
         user.setUserProfile(userProfile);
         userProfile.setUser(user);
+
+        user.setAddress(address);
         address.setUser(user);
 
         return user;
