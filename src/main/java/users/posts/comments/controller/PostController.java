@@ -26,4 +26,9 @@ public class PostController {
     public ResponseEntity<String> savePost(@RequestBody User user) {
         return postService.savePost(user);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Boolean> deletePost(@PathVariable Long id) {
+        return postService.deletePost(id);
+    }
 }

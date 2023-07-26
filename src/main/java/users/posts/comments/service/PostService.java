@@ -11,7 +11,6 @@ import users.posts.comments.reporsitory.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PostService {
@@ -57,6 +56,16 @@ public class PostService {
             return new ResponseEntity<>(postRepository.findAll(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public ResponseEntity<Boolean> deletePost(Long id) {
+        try {
+            postRepository.deleteById(id);
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
         }
     }
 }
