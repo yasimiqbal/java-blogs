@@ -37,4 +37,11 @@ public class User {
             cascade = CascadeType.ALL
     )
     private List<Post> posts;
+
+    @OneToOne(
+            mappedBy = "user",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
+    private Comment comment;
 }
